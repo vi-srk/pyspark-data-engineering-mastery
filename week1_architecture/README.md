@@ -40,6 +40,18 @@ In this module, we set up a clean local `SparkSession`, see lazy evaluation in a
 
 ---
 
+## Using the Jupyter Notebook (`week1_architecture.ipynb`)
+
+`week1_architecture.ipynb` mirrors `main.py` cell by cell so you can run each step interactively and inspect outputs one piece at a time instead of all at once:
+
+1. **Cell 1 — Session setup:** Starts the local `SparkSession` and prints the Spark version and Spark UI URL (`http://localhost:4040`).
+2. **Cell 2 — Lazy plan:** Creates the sample DataFrame, chains the transformations (`filter`, `withColumn`, `select`), and prints `.explain(mode="simple")` before triggering any action.
+3. **Cell 3 — Actions & UI check:** Runs `.show()` and `.count()` to trigger Spark jobs while the session is still alive, letting you inspect `http://localhost:4040` in your browser.
+4. **Cell 4 — Teardown:** Calls `spark.stop()` so local Spark resources are released cleanly.
+
+> **Notebook Tip:** Because `SparkSession` stays active between cells, avoid re-running the session creation cell repeatedly without stopping first, and always run the final `spark.stop()` cell when you finish.
+---
+
 ## How to Run
 Once `week1_architecture/main.py` is in place, run it from the repository root using `uv`:
 
