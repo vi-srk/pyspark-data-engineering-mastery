@@ -30,6 +30,16 @@ In this module, we set up a clean local `SparkSession`, see lazy evaluation in a
 
 ---
 
+## How `main.py` Works
+
+1. **Create a local `SparkSession` (`create_spark_session`):** Initializes Spark in `local[*]` mode (using available CPU cores on your machine) with a custom app name and `spark.sql.shuffle.partitions` set to `4` so local shuffle operations stay lightweight.
+2. **Create sample data & define lazy transformations (`demonstrate_lazy_evaluation`):** Builds a small DataFrame and chains `filter()`, `withColumn()`, and `select()`. Because transformations are lazy, Spark records these steps in a plan rather than computing them right away.
+3. **Inspect the execution plan (`.explain(mode="simple")`):** Prints how Spark plans to execute the DataFrame operations before/as actions run.
+4. **Trigger execution with Actions (`.show()` and `.count()`):** Calling an action forces Spark to plan, schedule, and run the actual job across partitions.
+5. **Pause for Spark UI & clean shutdown (`main`):** Sleeps briefly so you can open `http://localhost:4040` and inspect the job/stages, then calls `spark.stop()` in a `finally` block so resources always release cleanly even if an error occurs.
+
+---
+
 ## How to Run
 Once `week1_architecture/main.py` is in place, run it from the repository root using `uv`:
 
